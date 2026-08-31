@@ -1,39 +1,109 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* ============ COULEURS DE BASE (canaux RVB) ============ */
+  --orange-rgb: 244 50 11; /* #F4320B */
+  --blue-rgb: 11 35 244; /* #0B23F4 */
+  --gray-rgb: 17 17 17; /* #111111 */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+  /* ============ GAMMES PAR OPACITE ============ */
+  --orange-1: rgb(var(--orange-rgb) / 100%);
+  --orange-2: rgb(var(--orange-rgb) / 90%);
+  --orange-3: rgb(var(--orange-rgb) / 80%);
+  --orange-4: rgb(var(--orange-rgb) / 70%);
+  --orange-5: rgb(var(--orange-rgb) / 60%);
+  --orange-6: rgb(var(--orange-rgb) / 50%);
+  --orange-7: rgb(var(--orange-rgb) / 40%);
+  --orange-8: rgb(var(--orange-rgb) / 30%);
+  --orange-9: rgb(var(--orange-rgb) / 20%);
+  --orange-10: rgb(var(--orange-rgb) / 10%);
 
-html {
-  height: 100%;
-}
+  --blue-1: rgb(var(--blue-rgb) / 100%);
+  --blue-2: rgb(var(--blue-rgb) / 90%);
+  --blue-3: rgb(var(--blue-rgb) / 80%);
+  --blue-4: rgb(var(--blue-rgb) / 70%);
+  --blue-5: rgb(var(--blue-rgb) / 60%);
+  --blue-6: rgb(var(--blue-rgb) / 50%);
+  --blue-7: rgb(var(--blue-rgb) / 40%);
+  --blue-8: rgb(var(--blue-rgb) / 30%);
+  --blue-9: rgb(var(--blue-rgb) / 20%);
+  --blue-10: rgb(var(--blue-rgb) / 10%);
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
+  --gray-1: rgb(var(--gray-rgb) / 100%);
+  --gray-2: rgb(var(--gray-rgb) / 90%);
+  --gray-3: rgb(var(--gray-rgb) / 80%);
+  --gray-4: rgb(var(--gray-rgb) / 70%);
+  --gray-5: rgb(var(--gray-rgb) / 60%);
+  --gray-6: rgb(var(--gray-rgb) / 50%);
+  --gray-7: rgb(var(--gray-rgb) / 40%);
+  --gray-8: rgb(var(--gray-rgb) / 30%);
+  --gray-9: rgb(var(--gray-rgb) / 20%);
+  --gray-10: rgb(var(--gray-rgb) / 10%);
 
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* ============ ROLES SEMANTIQUES ============ */
+  --color-primary: var(--blue-1);
+  --color-primary-soft: var(--blue-8);
+  --color-accent: var(--orange-1);
+  --color-accent-soft: var(--orange-8);
+
+  --color-bg: #f2f3ff;
+  --color-surface: #ffffff;
+  --color-border: var(--gray-10);
+
+  --color-text: var(--gray-1);
+  --color-text-muted: var(--gray-5);
+  --color-text-inverse: #ffffff;
+
+  /* ============ TYPOGRAPHIE ============ */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  --text-h1: 40px;
+  --text-h2: 24px;
+  --text-h3: 20px;
+  --text-h4: 16px;
+  --text-body-lg: 16px;
+  --text-body: 14px;
+  --text-body-sm: 13px;
+  --text-caption: 12px;
+
+  /* ============ FORMES ET ESPACEMENTS ============ */
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 20px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+
+  --shadow-card: 0 4px 24px rgba(11, 35, 244, 0.06);
+  --container-max: 1120px;
 }
 
 * {
   box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
   padding: 0;
+}
+
+body {
+  min-width: 1024px; /* desktop uniquement, conformement au brief */
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
   margin: 0;
 }
 
@@ -42,8 +112,12 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }

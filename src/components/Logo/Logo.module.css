@@ -1,0 +1,90 @@
+/*
+ * Egaliseur du logo : les barres glissent d'un etat a l'autre.
+ *
+ * "alternate" fait l'aller puis le retour, donc un changement d'etat
+ * toutes les 2 secondes (cycle complet : 4 s).
+ * Seules les barres dont la position change sont animees.
+ */
+.bar0 {
+  animation-name: bar0;
+}
+.bar1 {
+  animation-name: bar1;
+}
+.bar3 {
+  animation-name: bar3;
+}
+.bar5 {
+  animation-name: bar5;
+}
+.bar7 {
+  animation-name: bar7;
+}
+.bar9 {
+  animation-name: bar9;
+}
+
+.bar0, .bar1, .bar3, .bar5, .bar7, .bar9 {
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes bar0 {
+  from {
+    y: 5.65625px;
+    height: 15px;
+  }
+  to {
+    y: 7.59375px;
+    height: 13px;
+  }
+}
+@keyframes bar1 {
+  from {
+    y: 0px;
+  }
+  to {
+    y: 7px;
+  }
+}
+@keyframes bar3 {
+  from {
+    y: 0px;
+  }
+  to {
+    y: 4px;
+  }
+}
+@keyframes bar5 {
+  from {
+    y: 5px;
+  }
+  to {
+    y: 11px;
+  }
+}
+@keyframes bar7 {
+  from {
+    y: 2px;
+  }
+  to {
+    y: 5px;
+  }
+}
+@keyframes bar9 {
+  from {
+    y: 3.3281px;
+  }
+  to {
+    y: 8.3281px;
+  }
+}
+
+/* Pas d'animation si l'utilisateur a demande a reduire les mouvements. */
+@media (prefers-reduced-motion: reduce) {
+  .bar0, .bar1, .bar3, .bar5, .bar7, .bar9 {
+    animation: none;
+  }
+}
