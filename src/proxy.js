@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { ROUTES, PUBLIC_ROUTES } from "@/config/routes";
 import { TOKEN_KEY } from "@/config/auth";
 
-export function middleware(request) {
+export function proxy(request) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get(TOKEN_KEY)?.value;
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
@@ -21,5 +21,7 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+  ],
 };
