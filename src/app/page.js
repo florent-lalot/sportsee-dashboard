@@ -43,14 +43,14 @@ export default function LoginPage() {
           <h1 className={styles.title}>
             Transformez
             <br />
-            vos stats en resultats
+            vos stats en résultats
           </h1>
 
           <h2 className={styles.subtitle}>Se connecter</h2>
 
           <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.field}>
-              <label htmlFor="username">Adresse email</label>
+              <label htmlFor="username">Adresse e-mail</label>
               <input
                 id="username"
                 type="text"
@@ -89,7 +89,7 @@ export default function LoginPage() {
           </form>
 
           <a href="#" className={styles.forgot}>
-            Mot de passe oublie ?
+            Mot de passe oublié ?
           </a>
         </div>
       </section>
@@ -104,7 +104,7 @@ export default function LoginPage() {
           className={styles.photo}
         />
         <p className={styles.caption}>
-          Analysez vos performances en un clin d&apos;oeil, suivez vos progres
+          Analysez vos performances en un clin d&apos;œil, suivez vos progrès
           et atteignez vos objectifs.
         </p>
       </aside>

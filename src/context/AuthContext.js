@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { login as loginRequest } from "@/services/authService";
 import { setToken, getToken, removeToken } from "@/services/cookies";
 
@@ -44,11 +50,13 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  const logout = () => {
+  // useCallback : garde la même référence entre les rendus, pour pouvoir
+  // l'utiliser sans risque dans les dépendances d'un useEffect.
+  const logout = useCallback(() => {
     removeToken();
     setTokenState(null);
     setUserId(null);
-  };
+  }, []);
 
   const value = {
     token,
@@ -65,7 +73,7 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === null) {
-    throw new Error("useAuth doit etre utilise dans un <AuthProvider>");
+    throw new Error("useAuth doit être utilisé dans un <AuthProvider>");
   }
   return context;
 }

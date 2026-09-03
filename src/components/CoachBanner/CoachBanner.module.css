@@ -1,0 +1,43 @@
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: 23px var(--space-lg);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+.text {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--color-primary);
+  font-size: var(--text-body-lg);
+  font-weight: 600;
+  transform: translate(18px);
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  fill: var(--color-primary);
+}
+
+.cta {
+  flex-shrink: 0;
+  padding: 14px 38px;
+  margin-right: 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-size: var(--text-body-lg);
+  font-weight: 500;
+  cursor: default;
+  transition: background 0.2s ease;
+}
+
+.cta:hover {
+  background: var(--blue-4);
+}

@@ -1,0 +1,62 @@
+.sectionTitle {
+  margin-top: 62px; /* espace entre la carte de profil et le titre */
+  margin-bottom: 30px; /* espace entre le titre et les graphiques */
+  font-size: 22px;
+  font-weight: 600;
+  padding-left: 4px;
+}
+
+.grid {
+  --shift: 35px;
+
+  display: grid;
+  grid-template-columns: calc(40% - 0.4 * var(--space-md) + var(--shift)) 1fr;
+  gap: var(--space-md);
+  margin-inline: 5px;
+}
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space-md) + 20px);
+  padding-top: calc(var(--space-md) + 55px);
+}
+.sectionSubtitle {
+  margin: -27px 0 var(--space-md);
+  padding-left: 4px;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-lg);
+}
+
+.statColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-left: 12px;
+}
+
+/* Titre de la seconde section : décalé sans toucher au premier. */
+.sectionTitleWeek {
+  margin-top: 70px;
+}
+
+/* Grille de la section "Cette semaine" : padding, pas margin,
+   pour ne pas fusionner avec la marge du titre. */
+.gridWeek {
+  padding-top: 5px;
+}
+
+/* ---------- Etats de chargement / erreur ---------- */
+.state,
+.stateError {
+  margin-top: 60px;
+  padding: var(--space-lg);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  font-size: var(--text-body-lg);
+  color: var(--color-text-muted);
+}
+
+.stateError {
+  color: var(--color-accent);
+}

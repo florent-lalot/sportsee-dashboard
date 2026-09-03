@@ -1,0 +1,70 @@
+.layout {
+  display: grid;
+  grid-template-columns: calc(42% - 0.42 * var(--space-lg) + 45px) 1fr;
+  gap: var(--space-lg);
+  padding-top: calc(var(--space-xl) + 26px);
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.right {
+  margin-left: 22px;
+}
+/* ---------- Bloc "Votre profil" ---------- */
+.infoCard {
+  padding: var(--space-lg) var(--space-lg) calc(var(--space-xl) + 5px);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.infoTitle {
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 22px;
+  font-weight: 600;
+  transform: translate(-4px, 5px);
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-lg);
+  transform: translateX(-4px);
+}
+
+/* ---------- Colonne des statistiques ---------- */
+.sectionTitle {
+  font-size: var(--text-h2);
+  font-weight: 600;
+}
+
+.sectionSubtitle {
+  margin-top: 2px;
+  color: var(--color-text-muted);
+  font-size: var(--text-body);
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.loading {
+  padding: var(--space-xl) 0;
+  color: var(--color-text-muted);
+}
+
+.stateError {
+  padding: var(--space-xl) 0;
+  color: var(--color-accent);
+}

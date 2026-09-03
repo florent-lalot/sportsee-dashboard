@@ -44,7 +44,7 @@ export default function Header() {
         <span className={styles.separator} aria-hidden="true" />
 
         <button type="button" onClick={handleLogout} className={styles.logout}>
-          Se deconnecter
+          Se déconnecter
         </button>
       </nav>
     </header>

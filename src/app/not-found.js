@@ -5,7 +5,7 @@ export default function NotFound() {
     <main>
       <h1>404</h1>
       <p>Cette page est introuvable.</p>
-      <Link href="/">Retour a la connexion</Link>
+      <Link href="/">Retour à la connexion</Link>
     </main>
   );
 }

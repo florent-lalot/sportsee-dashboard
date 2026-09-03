@@ -1,0 +1,50 @@
+.card {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.label {
+  color: var(--color-text);
+  font-size: var(--text-body-lg);
+}
+
+.value {
+  margin-top: 8px;
+  color: var(--color-primary);
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.value.accent {
+  color: var(--color-accent);
+}
+
+.unit {
+  color: var(--color-primary-soft);
+  font-size: var(--text-body-lg);
+  font-weight: 500;
+}
+
+.value.accent .unit {
+  color: var(--color-accent-soft);
+}
+
+/* ---------- Variante à fond bleu (page profil) ---------- */
+.card.filled {
+  background: var(--color-primary);
+  padding: calc(var(--space-md) - 2px) var(--space-lg);
+}
+
+.card.filled .label {
+  color: var(--color-text-inverse);
+  font-size: var(--text-body);
+}
+
+.card.filled .value {
+  color: var(--color-text-inverse);
+}
+
+.card.filled .unit {
+  color: rgb(255 255 255 / 70%);
+}

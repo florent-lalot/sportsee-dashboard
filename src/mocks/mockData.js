@@ -37,43 +37,26 @@ export const mockUserInfo = {
 };
 
 /** Reponse de GET /api/user-activity?startWeek=2026-08-01&endWeek=2026-08-28 */
+/**
+ * Réponse de GET /api/user-activity.
+ *
+ * Extrait réel des données de Sophie Martin, sur la période la plus dense
+ * du jeu de données (6 séances sur la dernière semaine). Choisi pour que
+ * les graphiques soient lisibles pendant le développement : en moyenne,
+ * les utilisateurs ne courent que 1 à 2 fois par semaine.
+ */
 export const mockUserActivity = [
-  {
-    date: "2026-08-03",
-    distance: 8.5,
-    duration: 55,
-    heartRate: { min: 139, max: 179, average: 162 },
-    caloriesBurned: 590,
-  },
-  {
-    date: "2026-08-07",
-    distance: 4.9,
-    duration: 32,
-    heartRate: { min: 143, max: 179, average: 166 },
-    caloriesBurned: 350,
-  },
-  {
-    date: "2026-08-10",
-    distance: 7.3,
-    duration: 47,
-    heartRate: { min: 140, max: 178, average: 163 },
-    caloriesBurned: 510,
-  },
-  {
-    date: "2026-08-17",
-    distance: 11.5,
-    duration: 75,
-    heartRate: { min: 132, max: 180, average: 157 },
-    caloriesBurned: 785,
-  },
-  {
-    date: "2026-08-24",
-    distance: 5.6,
-    duration: 36,
-    heartRate: { min: 142, max: 178, average: 164 },
-    caloriesBurned: 395,
-  },
+  { date: "2027-12-14", distance: 4.5, duration: 30, heartRate: { min: 144, max: 178, average: 166 }, caloriesBurned: 330 },
+  { date: "2027-12-21", distance: 3.8, duration: 25, heartRate: { min: 145, max: 180, average: 168 }, caloriesBurned: 285 },
+  { date: "2027-12-28", distance: 5, duration: 33, heartRate: { min: 143, max: 177, average: 165 }, caloriesBurned: 360 },
+  { date: "2028-01-02", distance: 4.2, duration: 28, heartRate: { min: 145, max: 175, average: 164 }, caloriesBurned: 312 },
+  { date: "2028-01-04", distance: 5.8, duration: 38, heartRate: { min: 140, max: 178, average: 163 }, caloriesBurned: 422 },
+  { date: "2028-01-04", distance: 5.8, duration: 38, heartRate: { min: 140, max: 178, average: 163 }, caloriesBurned: 422 },
+  { date: "2028-01-05", distance: 3.2, duration: 20, heartRate: { min: 148, max: 184, average: 170 }, caloriesBurned: 248 },
+  { date: "2028-01-05", distance: 3.2, duration: 20, heartRate: { min: 148, max: 184, average: 171 }, caloriesBurned: 248 },
+  { date: "2028-01-09", distance: 6.4, duration: 42, heartRate: { min: 140, max: 176, average: 162 }, caloriesBurned: 468 },
+  { date: "2028-01-09", distance: 6.4, duration: 42, heartRate: { min: 140, max: 176, average: 163 }, caloriesBurned: 468 },
 ];
 
-/** Cas limite : periode sans seance. L'API renvoie 200 + [] , pas une erreur. */
+/** Cas limite : période sans seance. L'API renvoie 200 + [] , pas une erreur. */
 export const mockEmptyActivity = [];

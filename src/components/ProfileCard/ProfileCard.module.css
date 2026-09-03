@@ -1,0 +1,120 @@
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    180deg,
+    var(--color-surface) 0%,
+    var(--color-surface) 55%,
+    rgb(255 255 255 / 0) 100%
+  );
+  margin-inline: 5px;
+  padding: 55px var(--space-lg);
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.photoWrap {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  margin-left: 20px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  transform: translateY(-20px);
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.photoWrap:hover .photo {
+  transform: scale(1.2);
+}
+
+.name {
+  font-size: var(--text-h2);
+  font-weight: 600;
+}
+
+.since {
+  margin-top: 2px;
+  color: var(--color-text-muted);
+  font-size: var(--text-body);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label {
+  color: var(--color-text-muted);
+  font-size: var(--text-body);
+  white-space: nowrap;
+  transform: translate(-6px, -20px);
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 25px 20px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-size: var(--text-h2);
+  font-weight: 600;
+  white-space: nowrap;
+  transform: translate(-18px, -21px);
+  margin-right: 20px;
+  transform: translateY(-20px);
+}
+
+.icon {
+  width: 39px;
+  height: 39px;
+}
+
+.tile {
+  font-size: 22px;
+}
+.info {
+  transform: translate(20px, -20px);
+}
+
+/* ---------- Variante compacte (page profil) ---------- */
+.card.compact {
+  padding: var(--space-md) var(--space-lg) calc(var(--space-md) + 10px);
+  background: var(--color-surface);
+}
+
+.card.compact .photoWrap {
+  width: 105px;
+  height: 118px;
+  margin-left: 0;
+  transform: translate(-5px, 5px);
+}
+
+.card.compact .info {
+  transform: translateY(5px);
+}
+
+.card.compact .name {
+  font-size: 22px;
+}
+
+/* Page profil : "Membre depuis..." remonté et décalé. */
+.card.compact .since {
+  transform: translate(-2px, -3px);
+}

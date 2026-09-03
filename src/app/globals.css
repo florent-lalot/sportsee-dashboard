@@ -122,3 +122,8 @@ img {
   display: block;
   max-width: 100%;
 }
+
+/* Page profil : remonte le footer de 50px */
+body:has([data-page="profile"]) footer {
+  margin-bottom: 60px;
+}

@@ -1,0 +1,113 @@
+.card {
+  padding: 45px 24px 20px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: var(--space-lg);
+  transform: translateY(-20px);
+}
+
+.value {
+  color: var(--color-primary);
+  font-size: var(--text-h3);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.subtitle {
+  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ---------- Selecteur de periode ---------- */
+.period {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  transform: translateY(5px);
+}
+
+.period button {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 13px;
+  line-height: 1;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.period button:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* ---------- Graphique ---------- */
+.chart {
+  margin-left: -8px;
+}
+
+.bar {
+  fill: var(--color-primary-soft);
+  transition: fill 0.25s ease;
+}
+
+/* Au survol de la tuile entière, les barres passent au bleu franc. */
+.card:hover .bar {
+  fill: var(--color-primary);
+}
+
+/* Au survol du graphique, les barres passent au bleu franc. */
+.chart:hover .bar {
+  fill: var(--color-primary);
+}
+
+/* ---------- Infobulle ---------- */
+.tooltip {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--gray-1);
+  color: var(--color-text-inverse);
+}
+
+.tooltipRange {
+  font-size: var(--text-caption);
+  opacity: 0.75;
+}
+
+.tooltipValue {
+  margin-top: 2px;
+  font-size: var(--text-body-lg);
+  font-weight: 600;
+}
+
+/* ---------- Legende ---------- */
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 15px 0 0 20px;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-primary-soft);
+}

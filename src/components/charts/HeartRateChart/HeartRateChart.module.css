@@ -1,0 +1,146 @@
+.card {
+  padding: 45px 24px 20px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+.card :global(.recharts-line-curve) {
+  stroke: var(--blue-9);
+  transition: stroke 0.25s ease;
+}
+
+.card:hover :global(.recharts-line-curve) {
+  stroke: var(--color-primary);
+}
+
+.card :global(.recharts-line-dot),
+.card :global(.recharts-line-dots circle) {
+  fill: var(--color-primary);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: var(--space-lg);
+  transform: translateY(-20px);
+}
+
+.value {
+  color: var(--color-accent);
+  font-size: var(--text-h3);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.subtitle {
+  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.period {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  transform: translateY(5px);
+}
+
+.period button {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 13px;
+  line-height: 1;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.period button:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* ---------- Barres ---------- */
+.barMin {
+  fill: var(--color-accent-soft);
+}
+
+.barMax {
+  fill: var(--color-accent);
+}
+
+/* ---------- Courbe : pâle au repos, bleu franc au survol ---------- */
+.chart :global(.recharts-line-curve) {
+  stroke: var(--blue-9);
+  transition: stroke 0.25s ease;
+}
+
+.chart:hover :global(.recharts-line-curve) {
+  stroke: var(--color-primary);
+}
+
+.chart :global(.recharts-line-dot),
+.chart :global(.recharts-line-dots circle) {
+  fill: var(--color-primary);
+}
+
+/* ---------- Infobulle ---------- */
+.tooltip {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--gray-1);
+  color: var(--color-text-inverse);
+}
+
+.tooltipDay {
+  margin-bottom: 4px;
+  font-size: var(--text-caption);
+  opacity: 0.75;
+}
+
+.tooltipRow {
+  font-size: var(--text-body-sm);
+}
+
+/* ---------- Légende ---------- */
+.legend {
+  display: flex;
+  gap: var(--space-md);
+  margin: 15px 0 0 20px;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.dotMin {
+  background: var(--color-accent-soft);
+}
+
+.dotMax {
+  background: var(--color-accent);
+}
+
+.dotAvg {
+  background: var(--color-primary);
+}

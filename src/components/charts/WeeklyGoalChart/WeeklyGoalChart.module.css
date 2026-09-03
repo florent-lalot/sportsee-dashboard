@@ -1,0 +1,74 @@
+.card {
+  padding: 45px 24px 20px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--color-primary);
+  transform: translate(10px, -25px);
+}
+
+.goal {
+  color: var(--color-primary-soft);
+  font-size: var(--text-h4);
+  font-weight: 600;
+}
+
+.subtitle {
+  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  transform: translate(10px, -25px);
+}
+
+.chart {
+  position: relative;
+  margin-top: var(--space-lg);
+  transform: translate(13px, -23px);
+}
+
+.done {
+  fill: var(--color-primary);
+}
+
+.left {
+  fill: var(--color-primary-soft);
+}
+
+.legendTop,
+.legendBottom {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.legendTop {
+  top: 20px;
+  right: 76px;
+}
+
+.legendBottom {
+  bottom: 50px;
+  left: 50px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.dotDone {
+  background: var(--color-primary);
+}
+
+.dotLeft {
+  background: var(--color-primary-soft);
+}

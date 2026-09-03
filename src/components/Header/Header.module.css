@@ -4,9 +4,9 @@
   justify-content: space-between;
   gap: var(--space-lg);
   width: 100%;
-  max-width: var(--container-max);
+  max-width: calc(var(--container-max) + 20px);
+  padding: var(--space-lg) 0;
   margin: 0 auto;
-  padding: var(--space-lg) var(--space-md);
 }
 
 .logo {
@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 8px 12px;
+  padding: 8px 50px;
   background: var(--color-surface);
   border-radius: var(--radius-pill);
 }
@@ -39,13 +39,19 @@
   color: var(--color-primary);
 }
 
+.link {
+  transform: translateX(-20px);
+}
+
 .active {
   font-weight: 600;
+  cursor: default;
 }
 
 .logout {
   color: var(--color-primary);
   font-weight: 500;
+  transform: translateX(15px);
 }
 
 .separator {
@@ -53,4 +59,15 @@
   height: 20px;
   background: var(--color-border);
   margin: 0 4px;
+  transform: translateX(4px);
+}
+
+/* "Coach AI" : 5 px de plus vers la droite que les deux autres liens. */
+.nav a:nth-of-type(2) {
+  transform: translateX(-15px);
+}
+
+/* "Mon profil" : 5 px de plus vers la droite que "Coach AI". */
+.nav a:nth-of-type(3) {
+  transform: translateX(-12px);
 }
