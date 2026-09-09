@@ -91,7 +91,7 @@ body {
 }
 
 body {
-  min-width: 1024px; /* desktop uniquement, conformement au brief */
+  min-width: 320px;
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);

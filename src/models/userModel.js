@@ -3,6 +3,15 @@
  * Toute correction de format vit ici, jamais dans les composants.
  */
 
+/**
+ * Repli sur l'objectif hebdomadaire.
+ *
+ * L'objectif vient desormais du backend (profile.weeklyGoal). Cette valeur
+ * n'est qu'un filet de securite : elle sert uniquement si l'application est
+ * lancee contre une version de l'API qui n'expose pas encore ce champ.
+ */
+export const FALLBACK_WEEKLY_GOAL = 2;
+
 const GENDERS = { female: "Femme", male: "Homme" };
 
 const MONTHS = [
@@ -63,6 +72,10 @@ export function userModel(raw) {
     memberSince: formatDate(profile.createdAt),
     // Date brute conservée pour les appels API (memberSince est destiné à l'affichage)
     createdAt: profile.createdAt ?? null,
+
+    // Objectif hebdomadaire, renvoye par l'API. Le repli ne joue que si
+    // le backend ne l'expose pas.
+    weeklyGoal: Number(profile.weeklyGoal) || FALLBACK_WEEKLY_GOAL,
 
     stats: {
       // L'API renvoie une CHAINE ici : on la convertit une fois pour toutes.

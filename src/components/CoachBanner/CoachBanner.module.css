@@ -34,7 +34,7 @@
   color: var(--color-text-inverse);
   font-size: var(--text-body-lg);
   font-weight: 500;
-  cursor: default;
+  cursor: pointer;
   transition: background 0.2s ease;
 }
 

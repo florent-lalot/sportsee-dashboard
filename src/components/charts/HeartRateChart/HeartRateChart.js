@@ -33,6 +33,8 @@ export default function HeartRateChart({
   periodLabel,
   onPrevious,
   onNext,
+  canPrevious = true,
+  canNext = true,
 }) {
   return (
     <section className={styles.card}>
@@ -46,12 +48,18 @@ export default function HeartRateChart({
           <button
             type="button"
             onClick={onPrevious}
+            disabled={!canPrevious}
             aria-label="Période précédente"
           >
             &#8249;
           </button>
           <span>{periodLabel}</span>
-          <button type="button" onClick={onNext} aria-label="Période suivante">
+          <button
+            type="button"
+            onClick={onNext}
+            disabled={!canNext}
+            aria-label="Période suivante"
+          >
             &#8250;
           </button>
         </div>

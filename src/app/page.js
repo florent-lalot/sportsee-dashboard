@@ -50,7 +50,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.field}>
-              <label htmlFor="username">Adresse e-mail</label>
+              <label htmlFor="username">Adresse email</label>
               <input
                 id="username"
                 type="text"
@@ -104,8 +104,8 @@ export default function LoginPage() {
           className={styles.photo}
         />
         <p className={styles.caption}>
-          Analysez vos performances en un clin d&apos;œil, suivez vos progrès
-          et atteignez vos objectifs.
+          Analysez vos performances en un clin d&apos;œil, suivez vos progrès et
+          atteignez vos objectifs.
         </p>
       </aside>
     </div>

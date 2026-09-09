@@ -27,6 +27,9 @@ export const mockUserInfo = {
     weight: 60,
     height: 165,
     profilePicture: "http://localhost:8000/images/sophie.jpg",
+    // Objectif hebdomadaire, expose par le backend depuis la modification
+    // de /api/user-info. Valeur reelle de Sophie Martin.
+    weeklyGoal: 2,
   },
   statistics: {
     // /!\ totalDistance est une CHAINE (le backend applique .toFixed(1))
@@ -60,3 +63,28 @@ export const mockUserActivity = [
 
 /** Cas limite : période sans seance. L'API renvoie 200 + [] , pas une erreur. */
 export const mockEmptyActivity = [];
+
+/**
+ * Les seances ci-dessus sont datees de 2028 : elles sortiraient de toutes
+ * les fenetres calculees a partir de la date du jour, et les graphiques
+ * resteraient vides. Cette fonction decale l'ensemble pour que la derniere
+ * seance tombe aujourd'hui, en conservant les ecarts entre les dates.
+ *
+ * Utilisee uniquement quand USE_MOCKS vaut true.
+ */
+export function mockActivityForToday() {
+  const startOfDay = (date) => new Date(date).setHours(0, 0, 0, 0);
+
+  const lastMockDay = Math.max(
+    ...mockUserActivity.map((session) => startOfDay(session.date)),
+  );
+  const offset = startOfDay(new Date()) - lastMockDay;
+
+  return mockUserActivity.map((session) => {
+    const shifted = new Date(startOfDay(session.date) + offset);
+    const month = String(shifted.getMonth() + 1).padStart(2, "0");
+    const day = String(shifted.getDate()).padStart(2, "0");
+
+    return { ...session, date: `${shifted.getFullYear()}-${month}-${day}` };
+  });
+}

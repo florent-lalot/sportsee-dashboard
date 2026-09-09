@@ -29,10 +29,15 @@ export function activityModel(rawSessions) {
  * Kilometres cumules par semaine, sur les N dernières semaines.
  * -> [{ label: "S1", km: 19.6, start: Date, end: Date }]
  */
-export function toWeeklyDistance(sessions, weeks = 4) {
-  if (!sessions.length) return [];
+export function toWeeklyDistance(sessions, weeks = 4, endDate = null) {
+  // Sans endDate, la fenetre s'ancre sur la derniere seance connue.
+  // Avec endDate, elle s'ancre sur la date demandee : c'est ce qui
+  // permet de naviguer d'une periode a l'autre.
+  if (!endDate && !sessions.length) return [];
 
-  const lastDay = new Date(Math.max(...sessions.map((s) => s.date.getTime())));
+  const lastDay = endDate
+    ? new Date(endDate)
+    : new Date(Math.max(...sessions.map((s) => s.date.getTime())));
   lastDay.setHours(23, 59, 59, 999);
 
   const buckets = Array.from({ length: weeks }, (_, index) => ({
@@ -126,12 +131,14 @@ export function formatPeriod(weeks) {
  * Isole les séances des 7 derniers jours, à partir de la dernière séance.
  * -> { sessions, start, end, label }
  */
-export function lastWeek(sessions, days = 7) {
-  if (!sessions.length) {
+export function lastWeek(sessions, days = 7, endDate = null) {
+  if (!endDate && !sessions.length) {
     return { sessions: [], start: null, end: null, label: "" };
   }
 
-  const end = new Date(Math.max(...sessions.map((s) => s.date.getTime())));
+  const end = endDate
+    ? new Date(endDate)
+    : new Date(Math.max(...sessions.map((s) => s.date.getTime())));
   end.setHours(23, 59, 59, 999);
 
   const start = new Date(end.getTime() - days * DAY_MS + 1);

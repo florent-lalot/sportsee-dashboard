@@ -63,7 +63,12 @@
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
-.period button:hover {
+.period button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.period button:not(:disabled):hover {
   border-color: var(--color-primary);
   color: var(--color-primary);
 }

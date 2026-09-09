@@ -22,3 +22,15 @@ export function lastWeeksRange(weeks, reference = new Date()) {
 
   return { startWeek: toISODate(start), endWeek: toISODate(end) };
 }
+
+/**
+ * Fin d'une fenetre glissante, decalee de N semaines vers le passe.
+ * offsetWeeks = 0 -> aujourd'hui, 1 -> il y a 7 jours, etc.
+ * @returns {Date} fin de journee (23:59:59.999)
+ */
+export function weeksAgo(offsetWeeks = 0, reference = new Date()) {
+  const date = new Date(reference);
+  date.setDate(date.getDate() - offsetWeeks * 7);
+  date.setHours(23, 59, 59, 999);
+  return date;
+}

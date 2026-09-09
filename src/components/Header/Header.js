@@ -4,19 +4,19 @@ import Logo from "@/components/Logo/Logo";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useChatModal } from "@/components/ChatModal/ChatModal";
 import { ROUTES } from "@/config/routes";
 import styles from "./Header.module.css";
 
 const NAV_ITEMS = [
   { href: ROUTES.DASHBOARD, label: "Dashboard" },
-  { href: ROUTES.COACH, label: "Coach AI" },
-  { href: ROUTES.PROFILE, label: "Mon profil" },
 ];
 
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { logout } = useAuth();
+  const { openChat } = useChatModal();
 
   const handleLogout = () => {
     logout();
@@ -40,6 +40,23 @@ export default function Header() {
             {label}
           </Link>
         ))}
+
+        <button
+          type="button"
+          className={`${styles.link} ${styles.coachButton}`}
+          onClick={openChat}
+          aria-haspopup="dialog"
+        >
+          Coach AI
+        </button>
+
+        <Link
+          href={ROUTES.PROFILE}
+          className={`${styles.link} ${pathname === ROUTES.PROFILE ? styles.active : ""}`}
+          aria-current={pathname === ROUTES.PROFILE ? "page" : undefined}
+        >
+          Mon profil
+        </Link>
 
         <span className={styles.separator} aria-hidden="true" />
 

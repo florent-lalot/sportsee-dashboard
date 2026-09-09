@@ -1,7 +1,9 @@
 /**
- * Objectif hebdomadaire de courses.
+ * Source des donnees.
+ *   true  -> les donnees fictives de src/mocks (aucun appel reseau)
+ *   false -> l'API reelle sur http://localhost:8000
  *
- * L'API n'expose pas ce champ, bien qu'il existe en base — et seulement
- * pour un utilisateur sur trois.
+ * L'interrupteur n'est lu qu'a un seul endroit : src/services/userService.js.
+ * Aucun composant, aucune page et aucun hook ne sait qu'il existe.
  */
-export const DEFAULT_WEEKLY_GOAL = 6;
+export const USE_MOCKS = false;

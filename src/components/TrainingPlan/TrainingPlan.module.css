@@ -1,0 +1,67 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 72px;
+  padding: 42px var(--space-lg);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.heroIcon { width: 56px; height: 56px; margin-bottom: 24px; fill: none; stroke: var(--color-primary); stroke-width: 2; }
+.card h2 { max-width: 600px; font-size: 30px; line-height: 1.15; }
+.card > p { max-width: 600px; margin-top: 14px; font-size: var(--text-body-lg); }
+.primaryButton, .secondaryButton { min-height: 48px; padding: 0 28px; border-radius: var(--radius-sm); font: inherit; font-weight: 400; }
+.primaryButton { margin-top: 28px; border: 0; background: var(--color-primary); color: var(--color-text-inverse); }
+.primaryButton:disabled { cursor: not-allowed; opacity: 0.65; }
+.secondaryButton { border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); }
+.formActions .secondaryButton { width: 48px; padding: 0; font-size: 22px; }
+.form { display: grid; width: min(100%, 480px); gap: 18px; margin-top: 28px; text-align: left; }
+.form label, .form fieldset { display: grid; gap: 8px; border: 0; padding: 0; color: var(--color-text-muted); }
+.form input, .form select, .form textarea { width: 100%; min-height: 46px; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text); font: inherit; }
+.form textarea { min-height: 70px; resize: vertical; }
+.form legend { margin-bottom: 8px; }
+.days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.dayLabel { display: flex !important; align-items: center; justify-content: center; min-height: 40px; padding: 6px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: var(--text-caption); cursor: pointer; }
+.dayLabel input { width: auto; min-height: 0; margin: 0 5px 0 0; }
+.formActions { display: flex; justify-content: center; gap: var(--space-sm); }
+.formActions .primaryButton { margin-top: 0; }
+.error, .warning { margin-top: 12px; color: var(--color-accent); }
+.loading { margin-top: 4px; color: var(--color-primary); font-weight: 600; text-align: center; }
+.durationInfo { color: var(--color-text-muted); text-align: center; }
+.planCard { align-items: stretch; }
+.planCard > h2, .planCard > p { text-align: center; align-self: center; }
+.warning { padding: 10px; border-radius: var(--radius-sm); background: var(--orange-10); }
+.recommendation { width: min(100%, 780px); margin: 18px auto 0; padding: 18px 22px; border-radius: var(--radius-sm); background: var(--blue-10); text-align: left; }
+.recommendation h3 { font-size: var(--text-h3); }
+.recommendation p { margin-top: 6px; }
+.recommendation ul { margin: 12px 0 0; padding-left: 20px; }
+.weeks { display: grid; gap: 18px; width: min(100%, 780px); margin: 28px auto 0; text-align: left; }
+.week { overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+.weekHeader { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 74px; padding: 18px 28px; border: 0; background: var(--color-surface); color: var(--color-text); font-size: var(--text-h2); font-weight: 600; text-align: left; }
+.weekHeader span:last-child { display: grid; width: 28px; height: 28px; place-items: center; padding-bottom: 2px; border-radius: 50%; background: var(--blue-10); color: var(--color-primary); font-size: 22px; font-weight: 400; line-height: 1; }
+.sessions { display: grid; gap: 14px; padding: 0 28px 28px; }
+.session { position: relative; min-height: 142px; padding: 22px 170px 22px 22px; border: 1px solid var(--gray-4); border-radius: var(--radius-sm); }
+.sessionDay { font-size: var(--text-body); font-weight: 600; }
+.session h3 { margin-top: 12px; font-size: var(--text-h3); }
+.session h3 + p { margin-top: 2px; color: var(--color-text-muted); }
+.sessionMeta { position: absolute; top: 50%; right: 22px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; transform: translateY(-50%); }
+.sessionMeta span { padding: 6px 10px; border-radius: var(--radius-pill); background: var(--blue-10); color: var(--color-text); font-size: var(--text-body-sm); font-weight: 600; }
+.planCard > .primaryButton { align-self: center; }
+.planActions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-sm); margin-top: 28px; }
+.planActions .primaryButton { margin-top: 0; }
+.planActions .secondaryButton { min-width: 190px; }
+
+@media (max-width: 640px) {
+  .card { margin-top: 40px; padding: 30px var(--space-md); }
+  .card h2 { font-size: 25px; }
+  .days { grid-template-columns: repeat(4, 1fr); }
+  .weekHeader { min-height: 62px; padding: 14px 18px; font-size: 20px; }
+  .sessions { padding: 0 12px 12px; }
+  .session { min-height: 0; padding: 16px; }
+  .sessionMeta { position: static; flex-direction: row; align-items: center; margin-top: 14px; transform: none; }
+  .formActions { flex-direction: column-reverse; }
+  .planActions { flex-direction: column; align-self: stretch; }
+  .planActions .secondaryButton { width: 100%; }
+}

@@ -40,7 +40,7 @@
 }
 
 .link {
-  transform: translateX(-20px);
+  transform: translateX(-12px);
 }
 
 .active {
@@ -51,7 +51,11 @@
 .logout {
   color: var(--color-primary);
   font-weight: 500;
-  transform: translateX(15px);
+  transform: translateX(4px);
+}
+
+.coachButton {
+  color: var(--color-text);
 }
 
 .separator {
@@ -62,12 +66,11 @@
   transform: translateX(4px);
 }
 
-/* "Coach AI" : 5 px de plus vers la droite que les deux autres liens. */
-.nav a:nth-of-type(2) {
-  transform: translateX(-15px);
-}
-
-/* "Mon profil" : 5 px de plus vers la droite que "Coach AI". */
-.nav a:nth-of-type(3) {
-  transform: translateX(-12px);
+/* Au-dela de 1140px, `margin: 0 auto` laisse une marge de chaque cote.
+   En dessous, le header occupe toute la largeur et le logo colle au bord :
+   on le decolle de 30px. */
+@media (max-width: 1140px) {
+  .logo {
+    transform: translateX(30px);
+  }
 }
