@@ -22,7 +22,7 @@ Chaque reponse doit respecter `TRAINING_PLAN_SCHEMA` :
 {
   "title": "Plan 10 km progressif",
   "goal": "10k",
-  "durationWeeks": 8,
+  "durationWeeks": 6,
   "weeks": [
     {
       "weekNumber": 1,
@@ -81,8 +81,8 @@ Jeux de test a executer et valider :
 | Profil / objectif | Disponibilites | Verification principale |
 | --- | --- | --- |
 | Debutant, 5 km, 6 semaines | Mardi, Jeudi, Samedi | Aucun autre jour ; progression douce. |
-| Intermediaire, 10 km, 8 semaines | Lundi, Mercredi, Dimanche | Sortie longue le dimanche et charge coherente. |
-| Expert, semi-marathon, 12 semaines | Mardi, Jeudi, Samedi, Dimanche | Endurance et recuperation entre seances intenses. |
+| Intermediaire, 10 km, 6 semaines | Lundi, Mercredi, Dimanche | Sortie longue le dimanche et charge coherente. |
+| Expert, semi-marathon, 6 semaines | Mardi, Jeudi, Samedi, Dimanche | Endurance et recuperation entre seances intenses. |
 | Utilisateur avec douleur declaree | Mardi, Samedi | Charge reduite, conseil de consulter ; aucun diagnostic. |
 | Donnees de courses absentes | Mercredi, Samedi | Plan prudent sans invention d'allure ou de volume. |
 

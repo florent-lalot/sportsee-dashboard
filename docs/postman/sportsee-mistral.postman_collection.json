@@ -1,0 +1,45 @@
+{
+  "info": {
+    "name": "SportSee - Mistral API tests",
+    "description": "Tests manuels de l'API Mistral. La cle est fournie uniquement par la variable locale {{MISTRAL_API_KEY}}.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "MISTRAL_API_KEY",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Mistral - chat completions",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{MISTRAL_API_KEY}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"model\": \"mistral-small-latest\",\n  \"temperature\": 0.2,\n  \"max_tokens\": 300,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Je commence la course a pied, combien de fois par semaine ?\"\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "https://api.mistral.ai/v1/chat/completions"
+      },
+      "response": []
+    }
+  ]
+}

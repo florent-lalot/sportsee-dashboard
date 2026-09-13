@@ -18,34 +18,39 @@ export function UserProvider({ children }) {
   useEffect(() => {
     // Déconnecté : on vide tout, aucun appel réseau
     if (!isAuthenticated) {
-      setUser(null);
-      setError(null);
-      return;
+      const resetTimer = window.setTimeout(() => {
+        setUser(null);
+        setError(null);
+        setIsLoading(false);
+      }, 0);
+      return () => window.clearTimeout(resetTimer);
     }
 
     // Garde-fou : si le composant est démonté (ou l'utilisateur déconnecté)
     // avant la fin de la requête, on ignore la réponse tardive.
     let cancelled = false;
+    const requestTimer = window.setTimeout(() => {
+      setIsLoading(true);
+      setError(null);
 
-    setIsLoading(true);
-    setError(null);
-
-    getUserInfo()
-      .then((data) => {
-        if (!cancelled) setUser(userModel(data));
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        if (isSessionExpired(err.status)) return logout(); // token expire ou invalide
-        setUser(null);
-        setError(err.message);
-      })
-      .finally(() => {
-        if (!cancelled) setIsLoading(false);
-      });
+      getUserInfo()
+        .then((data) => {
+          if (!cancelled) setUser(userModel(data));
+        })
+        .catch((err) => {
+          if (cancelled) return;
+          if (isSessionExpired(err.status)) return logout();
+          setUser(null);
+          setError(err.message);
+        })
+        .finally(() => {
+          if (!cancelled) setIsLoading(false);
+        });
+    }, 0);
 
     return () => {
       cancelled = true;
+      window.clearTimeout(requestTimer);
     };
   }, [isAuthenticated, logout]);
 

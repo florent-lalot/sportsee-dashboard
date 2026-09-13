@@ -1,7 +1,3 @@
-import { getToken } from "@/services/cookies";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 /** Erreur API : porte le code HTTP en plus du message. */
 export class ApiError extends Error {
   constructor(message, status) {
@@ -11,55 +7,46 @@ export class ApiError extends Error {
   }
 }
 
-/**
- * Statuts signifiant "la session n'est plus valable".
- * Ce backend renvoie 401 quand aucun token n'est envoye,
- * et 403 quand le token est present mais invalide OU expire
- * (voir Backend/app/middleware.js).
- */
+/** Les statuts indiquant une session absente, expiree ou invalide. */
 export const isSessionExpired = (status) => status === 401 || status === 403;
 
 function messageFor(status) {
   switch (status) {
     case 400:
-      return "Requête invalide";
+      return "Requete invalide";
     case 401:
-      return "Votre session a expiré, veuillez vous reconnecter";
+      return "Votre session a expire, veuillez vous reconnecter";
     case 403:
-      return "Accès refusé";
+      return "Acces refuse";
     case 404:
-      return "Données introuvables";
+      return "Donnees introuvables";
     default:
-      return "Le serveur est indisponible, réessayez plus tard";
+      return "Le serveur est indisponible, reessayez plus tard";
   }
 }
 
 /**
- * Appel authentifié à l'API SportSee.
- * @param {string} path  ex. "/api/user-info"
- * @returns {Promise<any>} le JSON de la réponse
- * @throws {ApiError}
+ * Appel authentifie vers le proxy Next.js. Le navigateur transmet le cookie
+ * HttpOnly au proxy ; le JWT n'est jamais accessible dans ce code client.
  */
 export async function apiFetch(path, options = {}) {
-  const token = getToken();
-
   let response;
   try {
-    response = await fetch(`${API_URL}${path}`, {
+    response = await fetch(`/api/sportsee${path}`, {
       ...options,
+      credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
-        ...(token && { Authorization: `Bearer ${token}` }),
         ...options.headers,
       },
     });
   } catch {
-    // fetch ne rejette que si le réseau échoue (backend éteint)
-    throw new ApiError("Serveur injoignable, vérifiez qu'il est démarré", 0);
+    throw new ApiError("Serveur injoignable, verifiez qu'il est demarre", 0);
   }
 
-  if (!response.ok)
+  if (!response.ok) {
     throw new ApiError(messageFor(response.status), response.status);
+  }
 
   return response.json();
 }

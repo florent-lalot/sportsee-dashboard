@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./TrainingPlan.module.css";
 
 const GOALS = [
@@ -38,12 +38,36 @@ function formatRecentRuns(sessions) {
     }));
 }
 
-function CalendarIcon() {
+function retryAfterFrom(response, data) {
+  const value = Number(data.retryAfter ?? response.headers.get("retry-after"));
+  return Number.isFinite(value) && value > 0 ? Math.ceil(value) : 30;
+}
+
+function normalizeStartDate(value) {
+  const match = String(value).trim().match(/^(?:(\d{4})-(\d{2})-(\d{2})|(\d{2})\/(\d{2})\/(\d{4}))$/);
+  if (!match) return null;
+
+  const [, isoYear, isoMonth, isoDay, frenchDay, frenchMonth, frenchYear] = match;
+  const year = Number(isoYear || frenchYear);
+  const month = Number(isoMonth || frenchMonth);
+  const day = Number(isoDay || frenchDay);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+function TrainingIcon({ variant }) {
   return (
-    <svg className={styles.heroIcon} viewBox="0 0 64 64" aria-hidden="true">
-      <rect x="10" y="14" width="44" height="40" rx="4" />
-      <path d="M10 26h44M21 8v12M43 8v12M19 35l4 4 7-8M35 35l4 4 7-8M19 45l4 4 7-8M35 45l4 4 7-8" />
-    </svg>
+    <span
+      className={`${styles.heroIcon} ${styles[variant]}`}
+      aria-hidden="true"
+    />
   );
 }
 
@@ -60,6 +84,15 @@ export default function TrainingPlan({ user, sessions }) {
   const [error, setError] = useState("");
   const [warning, setWarning] = useState("");
   const [recommendation, setRecommendation] = useState(null);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
+
+  useEffect(() => {
+    if (cooldownSeconds <= 0) return undefined;
+    const timer = window.setInterval(() => {
+      setCooldownSeconds((seconds) => Math.max(0, seconds - 1));
+    }, 1_000);
+    return () => window.clearInterval(timer);
+  }, [cooldownSeconds]);
 
   const athlete = useMemo(
     () => ({
@@ -73,6 +106,7 @@ export default function TrainingPlan({ user, sessions }) {
 
   const generatePlan = async (event) => {
     event.preventDefault();
+    if (cooldownSeconds > 0) return;
     setError("");
     setWarning("");
     setRecommendation(null);
@@ -85,6 +119,11 @@ export default function TrainingPlan({ user, sessions }) {
       setError("Indiquez la date de debut du programme.");
       return;
     }
+    const normalizedStartDate = normalizeStartDate(startDate);
+    if (!normalizedStartDate) {
+      setError("Indiquez une date valide au format JJ/MM/AAAA.");
+      return;
+    }
 
     setIsLoading(true);
     try {
@@ -93,7 +132,7 @@ export default function TrainingPlan({ user, sessions }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           goal,
-          startDate,
+          startDate: normalizedStartDate,
           durationWeeks: 6,
           availableDays,
           constraints,
@@ -102,10 +141,14 @@ export default function TrainingPlan({ user, sessions }) {
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data.plan) {
+        if (response.status === 429) {
+          setCooldownSeconds(retryAfterFrom(response, data));
+        }
         throw new Error(data.error || "La generation du plan a echoue.");
       }
 
       setPlan(data.plan);
+      setStartDate(normalizedStartDate);
       setWarning(data.warning || "");
       setRecommendation(data.recommendation || null);
       setExpandedWeek(data.plan.weeks[0]?.weekNumber ?? null);
@@ -155,10 +198,10 @@ export default function TrainingPlan({ user, sessions }) {
 
   if (step === "intro") {
     return (
-      <section className={styles.card} aria-labelledby="training-plan-title">
-        <CalendarIcon />
+      <section key="intro" className={styles.card} aria-labelledby="training-plan-title">
+        <TrainingIcon variant="calendarIcon" />
         <h2 id="training-plan-title">
-          Creez votre planning d&apos;entrainement intelligent
+          Créez votre planning d&apos;entraînement intelligent
         </h2>
         <p>
           Notre IA vous aide a bâtir un planning 100% personnalisé selon vos
@@ -177,11 +220,15 @@ export default function TrainingPlan({ user, sessions }) {
 
   if (step === "goal") {
     return (
-      <section className={styles.card} aria-labelledby="training-goal-title">
-        <CalendarIcon />
+      <section
+        key="goal"
+        className={styles.card}
+        aria-labelledby="training-goal-title"
+      >
+        <TrainingIcon variant="goalIcon" />
         <h2 id="training-goal-title">Quel est votre objectif principal ?</h2>
         <p>Choisissez l&apos;objectif qui vous motive le plus</p>
-        <div className={styles.form}>
+        <div className={`${styles.form} ${styles.goalForm}`}>
           <label>
             Objectif
             <select
@@ -211,28 +258,42 @@ export default function TrainingPlan({ user, sessions }) {
 
   if (step === "config") {
     return (
-      <section className={styles.card} aria-labelledby="training-config-title">
-        <CalendarIcon />
+      <section
+        key="config"
+        className={`${styles.card} ${styles.configCard}`}
+        aria-labelledby="training-config-title"
+      >
+        <TrainingIcon variant="calendarIcon" />
         <h2 id="training-config-title">
           Quand souhaitez-vous commencer votre programme ?
         </h2>
         <p>
-          Générez un programme d&apos;une semaine à partir de la date de votre
+          Générez un programme de six semaines à partir de la date de votre
           choix
         </p>
-        <form className={styles.form} onSubmit={generatePlan}>
+        <form
+          className={`${styles.form} ${styles.configForm}`}
+          onSubmit={generatePlan}
+        >
           <label>
             Date de début
             <input
-              type="date"
+              type="text"
+              inputMode="numeric"
               value={startDate}
               onChange={(event) => setStartDate(event.target.value)}
+              className={styles.dateInput}
             />
           </label>
 
           {error && (
             <p className={styles.error} role="alert">
               {error}
+            </p>
+          )}
+          {cooldownSeconds > 0 && (
+            <p className={styles.loading} role="status">
+              Nouvelle generation possible dans {cooldownSeconds} secondes.
             </p>
           )}
           {isLoading && (
@@ -252,9 +313,13 @@ export default function TrainingPlan({ user, sessions }) {
             <button
               type="submit"
               className={styles.primaryButton}
-              disabled={isLoading}
+              disabled={isLoading || cooldownSeconds > 0}
             >
-              {isLoading ? "Generation..." : "Generer mon planning"}
+              {isLoading
+                ? "Generation..."
+                : cooldownSeconds > 0
+                  ? `Reessayer dans ${cooldownSeconds} s`
+                  : "Generer mon planning"}
             </button>
           </div>
         </form>
@@ -264,22 +329,28 @@ export default function TrainingPlan({ user, sessions }) {
 
   return (
     <section
+      key="plan"
       className={`${styles.card} ${styles.planCard}`}
       aria-labelledby="plan-title"
     >
-      <h2 id="plan-title">Votre planning d&apos;entrainement</h2>
-      <p>{plan.title}</p>
+      <h2 id="plan-title">Votre planning de la semaine</h2>
+      <p>Important pour définir un programme adapté</p>
       {warning && (
         <p className={styles.warning} role="status">
           {warning}
         </p>
       )}
       {recommendation && (
-        <aside className={styles.recommendation} aria-label="Objectif recommande">
+        <aside
+          className={styles.recommendation}
+          aria-label="Objectif recommande"
+        >
           <h3>Objectif recommande : course de 5 km</h3>
           <p>{recommendation.explanation}</p>
           <ul>
-            {recommendation.progression.map((item) => <li key={item}>{item}</li>)}
+            {recommendation.progression.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
           </ul>
         </aside>
       )}
@@ -347,12 +418,15 @@ export default function TrainingPlan({ user, sessions }) {
           type="button"
           className={styles.primaryButton}
           onClick={() => {
-          setPlan(null);
-          setRecommendation(null);
-          setStep("goal");
+            setPlan(null);
+            setRecommendation(null);
+            setStep("goal");
           }}
+          disabled={cooldownSeconds > 0}
         >
-          Regenerer un programme
+          {cooldownSeconds > 0
+            ? `Reessayer dans ${cooldownSeconds} s`
+            : "Regenerer un programme"}
         </button>
       </div>
     </section>

@@ -5,6 +5,17 @@ import { TOKEN_KEY } from "@/config/auth";
 export function proxy(request) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get(TOKEN_KEY)?.value;
+
+  // Les routes API gerent elles-memes leur authentification. La connexion et
+  // l'etat de session doivent rester accessibles avant la creation du cookie.
+  if (pathname.startsWith("/api/")) {
+    const publicApiRoutes = ["/api/auth/login", "/api/auth/session", "/api/auth/logout"];
+    if (!publicApiRoutes.includes(pathname) && !token) {
+      return NextResponse.json({ error: "Non authentifie." }, { status: 401 });
+    }
+    return NextResponse.next();
+  }
+
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
   // Page protégée sans token → retour à la connexion

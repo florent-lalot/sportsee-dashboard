@@ -13,8 +13,8 @@ const DAY_INDEX = {
 
 function escapeIcs(value) {
   return String(value ?? "")
-    .replace(/[\r\n]+/g, " ")
     .replace(/\\/g, "\\\\")
+    .replace(/\r\n|\r|\n/g, "\\n")
     .replace(/;/g, "\\;")
     .replace(/,/g, "\\,")
     .slice(0, 500);
@@ -27,7 +27,7 @@ function foldLine(line) {
 
 function localIcsDate(date) {
   const pad = (value) => String(value).padStart(2, "0");
-  return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}T${pad(date.getHours())}${pad(date.getMinutes())}00`;
+  return `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}T${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}00`;
 }
 
 function utcIcsDate(date) {
@@ -36,10 +36,12 @@ function utcIcsDate(date) {
 }
 
 function getSessionDate(startDate, weekNumber, day) {
-  const date = new Date(`${startDate}T18:00:00`);
-  const startDay = (date.getDay() + 6) % 7;
+  // UTC is used only for calendar arithmetic. DTSTART is explicitly emitted
+  // in Europe/Paris below, so every session remains at 18:00 local time.
+  const date = new Date(`${startDate}T18:00:00Z`);
+  const startDay = (date.getUTCDay() + 6) % 7;
   const offset = (DAY_INDEX[day] - startDay + 7) % 7;
-  date.setDate(date.getDate() + (weekNumber - 1) * 7 + offset);
+  date.setUTCDate(date.getUTCDate() + (weekNumber - 1) * 7 + offset);
   return date;
 }
 
@@ -55,7 +57,7 @@ function buildIcs(plan, startDate) {
         `Duree : ${session.durationMin} minutes`,
         session.distanceKm !== null && session.distanceKm !== undefined ? `Distance : ${session.distanceKm} km` : null,
         session.instructions,
-      ].filter(Boolean).join("\\n");
+      ].filter(Boolean).join("\n");
 
       return [
         "BEGIN:VEVENT",
@@ -83,6 +85,24 @@ function buildIcs(plan, startDate) {
     "METHOD:PUBLISH",
     "X-WR-CALNAME:SportSee - Plan d'entrainement",
     "X-WR-TIMEZONE:Europe/Paris",
+    "BEGIN:VTIMEZONE",
+    "TZID:Europe/Paris",
+    "X-LIC-LOCATION:Europe/Paris",
+    "BEGIN:DAYLIGHT",
+    "TZOFFSETFROM:+0100",
+    "TZOFFSETTO:+0200",
+    "TZNAME:CEST",
+    "DTSTART:19700329T020000",
+    "RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU",
+    "END:DAYLIGHT",
+    "BEGIN:STANDARD",
+    "TZOFFSETFROM:+0200",
+    "TZOFFSETTO:+0100",
+    "TZNAME:CET",
+    "DTSTART:19701025T030000",
+    "RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU",
+    "END:STANDARD",
+    "END:VTIMEZONE",
     ...events,
     "END:VCALENDAR",
   ].map(foldLine).join("\r\n");

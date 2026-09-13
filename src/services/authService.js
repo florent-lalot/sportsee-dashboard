@@ -1,25 +1,19 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 /**
- * Authentifie un utilisateur auprès de l'API.
- * @returns {Promise<{token: string, userId: string}>}
- * @throws {Error} si les identifiants sont refusés
+ * Authentifie un utilisateur via Next.js. La route serveur stocke le JWT dans
+ * un cookie HttpOnly ; le token n'est jamais renvoye au navigateur.
+ * @returns {Promise<{userId: string | null}>}
  */
 export async function login(username, password) {
-  const response = await fetch(`${API_URL}/api/login`, {
+  const response = await fetch("/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
     body: JSON.stringify({ username, password }),
   });
 
   if (!response.ok) {
-    if (response.status === 400) {
-      throw new Error("Nom d'utilisateur et mot de passe requis");
-    }
-    if (response.status === 401) {
-      throw new Error("Identifiants incorrects");
-    }
-    throw new Error("Le serveur est indisponible, réessayez plus tard");
+    const body = await response.json().catch(() => null);
+    throw new Error(body?.error ?? "Le serveur est indisponible, reessayez plus tard.");
   }
 
   return response.json();

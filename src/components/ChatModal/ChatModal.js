@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { useUser } from "@/context/UserContext";
 import { getUserActivity } from "@/services/userService";
 import { activityModel } from "@/models/activityModel";
@@ -17,6 +18,11 @@ const ChatModalContext = createContext(null);
 
 function keepRecentMessages(messages) {
   return messages.slice(-MAX_VISIBLE_MESSAGES);
+}
+
+function retryAfterFrom(response, data) {
+  const value = Number(data.retryAfter ?? response.headers.get("retry-after"));
+  return Number.isFinite(value) && value > 0 ? Math.ceil(value) : 30;
 }
 
 export function ChatModalProvider({ children }) {
@@ -46,6 +52,7 @@ export default function ChatModal({ onClose }) {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
   const inputRef = useRef(null);
   const lastMessageRef = useRef(null);
   const [recentRuns, setRecentRuns] = useState([]);
@@ -104,9 +111,17 @@ export default function ChatModal({ onClose }) {
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, isLoading]);
 
+  useEffect(() => {
+    if (cooldownSeconds <= 0) return undefined;
+    const timer = window.setInterval(() => {
+      setCooldownSeconds((seconds) => Math.max(0, seconds - 1));
+    }, 1_000);
+    return () => window.clearInterval(timer);
+  }, [cooldownSeconds]);
+
   const sendMessage = async (value) => {
     const message = value.trim();
-    if (!message || isLoading) return;
+    if (!message || isLoading || cooldownSeconds > 0) return;
 
     setMessages((current) => keepRecentMessages([...current, { role: "user", content: message }]));
     setInput("");
@@ -126,6 +141,9 @@ export default function ChatModal({ onClose }) {
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok || typeof data.message !== "string" || !data.message.trim()) {
+        if (response.status === 429) {
+          setCooldownSeconds(retryAfterFrom(response, data));
+        }
         throw new Error(data.error || "Le coach IA est indisponible. Réessayez plus tard.");
       }
 
@@ -179,16 +197,33 @@ export default function ChatModal({ onClose }) {
                 >
                   {chatMessage.role === "assistant" && <p className={styles.author}>Coach AI</p>}
                   <p>{chatMessage.content}</p>
+                  {chatMessage.role === "assistant" && (
+                    <span className={styles.assistantBadge} aria-label="Coach IA">
+                      <Image src="/coach-ai-avatar.png" alt="" width={32} height={32} />
+                    </span>
+                  )}
                   {chatMessage.role === "user" && (
                     <span className={styles.avatar} aria-label="Vous">
-                      {user?.firstName?.slice(0, 1) || "V"}
+                      {user?.pictureUrl ? (
+                        <Image
+                          src={user.pictureUrl}
+                          alt="Votre photo de profil"
+                          width={34}
+                          height={34}
+                          className={styles.avatarImage}
+                        />
+                      ) : (
+                        user?.firstName?.slice(0, 1) || "V"
+                      )}
                     </span>
                   )}
                 </article>
               ))}
               {isLoading && (
                 <div className={`${styles.message} ${styles.assistantMessage} ${styles.typing}`}>
-                  <span className={styles.coachIcon} aria-hidden="true">✦</span>
+                  <span className={styles.coachIcon} aria-hidden="true">
+                    <Image src="/coach-ai-avatar.png" alt="" width={32} height={32} />
+                  </span>
                   <span className={styles.dots} aria-label="Le coach écrit">
                     <i /> <i /> <i />
                   </span>
@@ -200,10 +235,17 @@ export default function ChatModal({ onClose }) {
         </div>
 
         {error && <p className={styles.error} role="alert">{error}</p>}
+        {cooldownSeconds > 0 && (
+          <p className={styles.error} role="status">
+            Nouveau message possible dans {cooldownSeconds} secondes.
+          </p>
+        )}
 
         <div className={styles.bottomArea}>
           <form className={styles.composer} onSubmit={handleSubmit}>
-            <span className={styles.sparkle} aria-hidden="true">✦</span>
+            <span className={styles.sparkle} aria-hidden="true">
+              <Image src="/coach-ai-sparkle.png" alt="" width={28} height={28} />
+            </span>
             <label className={styles.srOnly} htmlFor="chat-message">Votre message au coach IA</label>
             <input
               ref={inputRef}
@@ -213,17 +255,17 @@ export default function ChatModal({ onClose }) {
               onChange={(event) => setInput(event.target.value)}
               placeholder="Comment puis-je vous aider ?"
               maxLength={2000}
-              disabled={isLoading}
+              disabled={isLoading || cooldownSeconds > 0}
               autoComplete="off"
             />
-            <button type="submit" disabled={isLoading || !input.trim()} aria-label="Envoyer le message">
+            <button type="submit" disabled={isLoading || cooldownSeconds > 0 || !input.trim()} aria-label="Envoyer le message">
               ↑
             </button>
           </form>
 
           <div className={styles.suggestions} aria-label="Questions suggérées">
             {SUGGESTIONS.map((suggestion) => (
-              <button key={suggestion} type="button" disabled={isLoading} onClick={() => sendMessage(suggestion)}>
+              <button key={suggestion} type="button" disabled={isLoading || cooldownSeconds > 0} onClick={() => sendMessage(suggestion)}>
                 {suggestion}
               </button>
             ))}

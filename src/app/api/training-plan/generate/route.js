@@ -11,6 +11,8 @@ const MISTRAL_CHAT_URL = "https://api.mistral.ai/v1/chat/completions";
 const AVAILABLE_DAYS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 const REQUEST_TIMEOUT_MS = 30_000;
 const PLAN_DURATION_WEEKS = 6;
+const DEFAULT_RETRY_AFTER_SECONDS = 30;
+const MAX_RETRY_AFTER_SECONDS = 300;
 
 function errorResponse(error, status) {
   return NextResponse.json({ error }, { status });
@@ -74,6 +76,23 @@ function fallbackResponse(data, warning) {
     source: "fallback",
     warning,
   });
+}
+
+function getRetryAfterSeconds(response) {
+  const retryAfter = Number(response.headers.get("retry-after"));
+  if (!Number.isFinite(retryAfter) || retryAfter <= 0) return DEFAULT_RETRY_AFTER_SECONDS;
+  return Math.min(Math.ceil(retryAfter), MAX_RETRY_AFTER_SECONDS);
+}
+
+function rateLimitResponse(mistralResponse) {
+  const retryAfter = getRetryAfterSeconds(mistralResponse);
+  return NextResponse.json(
+    {
+      error: `Trop de demandes au service IA. Reessayez dans ${retryAfter} secondes.`,
+      retryAfter,
+    },
+    { status: 429, headers: { "Retry-After": String(retryAfter) } },
+  );
 }
 
 function marathonSafetyResponse(data) {
@@ -186,6 +205,9 @@ export async function POST(request) {
 
     if (!mistralResponse.ok) {
       console.error("[api/training-plan/generate] Mistral request failed", { status: mistralResponse.status });
+      if (mistralResponse.status === 429) {
+        return rateLimitResponse(mistralResponse);
+      }
       return fallbackResponse(data, "Le service IA est temporairement indisponible. Un plan general est propose.");
     }
 
