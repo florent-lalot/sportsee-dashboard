@@ -79,7 +79,13 @@
 }
 
 .assistantMessage:not(.typing) {
-  margin-left: 20px;
+  margin-left: -30px;
+}
+
+@media (min-width: 900px) {
+  .assistantMessage:not(.typing) {
+    margin-left: -125px;
+  }
 }
 
 .author {
