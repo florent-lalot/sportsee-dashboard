@@ -82,9 +82,15 @@
   margin-left: -30px;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1200px) {
   .assistantMessage:not(.typing) {
     margin-left: -125px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1199px) {
+  .assistantMessage:not(.typing) {
+    margin-left: 10px;
   }
 }
 
